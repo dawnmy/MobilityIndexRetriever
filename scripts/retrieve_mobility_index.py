@@ -20,16 +20,16 @@ from pypinyin import lazy_pinyin
 from datetime import datetime, timedelta
 from os.path import dirname, abspath, join
 
+# Dict for converting Chinese to English for city name
+city_cn2en_dict = {city.name_cn: (city.province, city.name_en)
+                   for city in cities.get_cities()}
 
-city_cn2en_dict = {}
-for city in cities.get_cities():
-    city_cn2en_dict[city.name_cn] = (city.province, city.name_en)
-
-
+# Dataframe with city names and correspoding codes from Baidu
 df = pd.read_csv(join(dirname(dirname(abspath(__file__))),
                       'data/china_areacode_baidu_wien.txt'),
                  sep='\t', index_col=0)
 
+# Dict for convering city name to city code
 citycode_dict = pd.Series(df.CODE_CITY.values, index=df.NAME_CITY_EN).to_dict()
 
 base_url = "http://huiyan.baidu.com/migration"
