@@ -14,10 +14,12 @@ import json
 import click
 import requests
 import pandas as pd
+from os import path
 
 from china_cities import cities
 from pypinyin import lazy_pinyin
 from datetime import datetime, timedelta
+from os.path import dirname, abspath, realpath, join
 
 
 city_cn2en_dict = {}
@@ -25,7 +27,8 @@ for city in cities.get_cities():
     city_cn2en_dict[city.name_cn] = (city.province, city.name_en)
 
 
-df = pd.read_csv('../data/china_areacode_baidu_wien.txt',
+df = pd.read_csv(join(dirname(dirname(abspath(__file__))),
+                      'data/china_areacode_baidu_wien.txt'),
                  sep='\t', index_col=0)
 
 citycode_dict = pd.Series(df.CODE_CITY.values, index=df.NAME_CITY_EN).to_dict()
@@ -48,11 +51,13 @@ def retrieve_mobility(app, city, move, date, output):
     Arguments:
 
         app {str} -- The application to call: `intercity` (flows from a given city to top 100 cities or flows to 
-                       a given city from top 100 cities for given date range), `intracity` (within a city) or 
-                       `history` (all flow from or to a given city in history).
+a given city from top 100 cities for given date range), `intracity` (within a city) or 
+`history` (all flow from or to a given city in history).
 
         city {str} -- The city where the flows to or from, in the format of "Province City" e.g. "Hubei Wuhan"
+
         move {str} -- move in (to) or out (from)
+
         date {str} -- date or date range (only for intercity), e.g. "2020-03-01" or "2020-03-01:2020-03-07" 
 
         output {str} -- The output file name
