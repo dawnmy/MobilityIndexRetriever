@@ -14,12 +14,11 @@ import json
 import click
 import requests
 import pandas as pd
-from os import path
 
 from china_cities import cities
 from pypinyin import lazy_pinyin
 from datetime import datetime, timedelta
-from os.path import dirname, abspath, realpath, join
+from os.path import dirname, abspath, join
 
 
 city_cn2en_dict = {}
